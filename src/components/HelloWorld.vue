@@ -1,58 +1,115 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
+  <div class="main">
+    <button @click="(e) => increaseCounter(e, 123)">Increase</button>
+    <span>{{ counter }}</span>
+    <br />
+    <br />
+    <form action="" @submit.prevent="sendFormData" v-if="!isLogin">
+      <label for="">Enter email</label>
+      <input type="text" name="email" v-model="email" />
+      <button type="submit">Login</button>
+    </form>
+    <div v-else>
+      <button type="button" @click="(e) => (isLogin = false)">Logout</button>
+      <br />
+      <span>{{ isLogin ? "Đã đăng nhập" : "Chưa đăng nhập" }}</span>
+      <br />
+      <br />
+      <h1>computed</h1>
+      <p>Original message: "{{ message }}"</p>
+      <p>Computed reversed message: "{{ reversedMessage }}"</p>
+      <br />
+      <br />
+      <h1>Binding HTML Classes</h1>
+      <div class="static" v-bind:class="classObject"></div>
+    </div>
+    <br />
+    <br />
+    <h1>List Rendering</h1>
     <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
+      <li v-for="(skill, index) in listSkill" :key="index">
+        {{ skill }}
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
+  data: () => {
+    return {
+      counter: 0,
+      accountEmail: "xethongs100@gmail.com",
+      email: "",
+      isLogin: false,
+      message: "Hello",
+      isActive: true,
+      isError: false,
+      listSkill: [
+        "Java",
+        "PHP",
+        "Javascript",
+        "HTML5",
+        "SQL",
+        "Android",
+        "iOS",
+        "MySQL",
+        "Tester",
+        "English",
+        "Ruby",
+        "Python",
+        "Ruby on Rails",
+        "QA QC",
+        "Database",
+        ".NET",
+        "Business Analyst",
+        "NodeJS",
+        "ReactJS",
+        "Designer",
+      ],
+    };
+  },
   props: {
-    msg: String
-  }
-}
+    msg: String,
+  },
+  methods: {
+    increaseCounter(e, number) {
+      console.log("event", e);
+      console.log("number", number);
+      ++this.counter;
+    },
+    sendFormData() {
+      this.isLogin = this.accountEmail === this.email ? true : false;
+    },
+  },
+  computed: {
+    reversedMessage() {
+      // `this` points to the vm instance
+      return this.message.split("").reverse().join("");
+    },
+    classObject() {
+      return {
+        active: this.isLogin,
+        error: !this.isLogin,
+      };
+    },
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style lang="css" scoped>
+.static {
+  height: 100px;
+  width: 100px;
+  background: green;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.static.active {
+  background: blue;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+.static.error {
+  background: red;
 }
 </style>
